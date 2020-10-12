@@ -1,15 +1,16 @@
 {
   "expo": {
-    "name": "gamers",
-    "slug": "gamers",
+    "name": "GAMERS",
+    "slug": "GAMERS",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/loder.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "owner": "arnold-caleb",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -21,6 +22,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "package": "gamers.doctorsarch.org"
     }
   }
 }

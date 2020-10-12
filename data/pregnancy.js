@@ -1,0 +1,30 @@
+export const risk = {
+	young: false,
+	old: false,
+	many: false,
+	short: false,
+	lastPregnancy: false,
+	multiple: false,
+	surgery: false,
+	abortion: false,
+	excessiveBleeding: false,
+	hypertension: false,
+	bloodSugar: false,
+	hiv: false,
+	convulsions: false,
+	fetalDeath: false,
+	lbterm: false,
+	stds: false,
+};
+
+export const etype = {
+	leakage: false,
+	pain: false,
+	fits: false,
+	fever: false,
+	vomiting: false,
+	stools: false,
+	dbreathing: false,
+	mental: false,
+	yellowEyes: false,
+};

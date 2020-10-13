@@ -140,3 +140,24 @@ export const addBiodata = async (info) => {
 		alert("An error occured when updating the database.");
 	}
 };
+
+export const updateCase = async (caseId) => {
+	try {
+		const response = await fetch(
+			"https://doctorsarch.org/gamers_assets/login_api/updateCase.php",
+			{
+				method: "POST",
+				mode: "cors",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					CaseId: caseId,
+				}),
+			}
+		);
+		return response;
+	} catch (e) {
+		alert("An error occured when closing the case");
+	}
+};

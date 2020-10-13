@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { styles, THEME } from "../styles";
 
 import { diseases } from "../data/diagnoses";
-import { addBiodata, visitation, referForDangerSigns } from "../api/gamersapi";
+import { addBiodata, visitation, referForDangerSigns, updateCase } from "../api/gamersapi";
 
 export class Results extends React.Component {
 	state = { ...this.props.route.params };
@@ -15,6 +15,7 @@ export class Results extends React.Component {
 			this.state.visitFrequency,
 			this.state.durationUnits
 		);
+		await updateCase(this.state.caseId)
 		this.props.navigation.navigate("Home");
 	};
 

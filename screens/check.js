@@ -52,7 +52,7 @@ export class CheckScreen extends React.Component {
 						Patient biodata
 					</Text>
 				</TouchableOpacity>
-				{this.props.route.params.bioassertation && (
+				
 					<TouchableOpacity
 						style={[
 							styles.items,
@@ -62,10 +62,10 @@ export class CheckScreen extends React.Component {
 						onPress={() => this.refer("Question")}
 					>
 						<Text style={[styles.white, checkStyles.submitText]}>
-							Diagnostic questions
+							Diagnose
 						</Text>
 					</TouchableOpacity>
-				)}
+				
 			</View>
 		);
 	}

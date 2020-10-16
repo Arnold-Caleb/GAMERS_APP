@@ -21,14 +21,14 @@ export class BiodataScreen extends React.Component {
 		bioassertation: false,
 		biodata : [
 			{field:"caseId", value: null},
-			{field: "mother", value: false},
+			{field: "mother", value: true},
 			{field:"father", value: false},
 			{field: "children", value: 0},
 			{field: "boys", value: 0},
 			{field: "girls", value: 0},
 			{field: "familyType", value: null},
 			{field: "birthIndex", value: null},
-			{field: "disability", value: false},
+			{field: "disability", value: true},
 			{field: "disabilityDescription", value: null}
 			]
 
@@ -99,7 +99,7 @@ export class BiodataScreen extends React.Component {
 							keyboardType="numeric"
 						/>
 					</View>
-					{this.state.children > 0 && (
+					{this.currentValue("children") > 0 && (
 						<View>
 							<View
 								style={{
@@ -186,7 +186,7 @@ export class BiodataScreen extends React.Component {
 						}
 					/>
 
-					{this.state.disability && (
+					{this.currentValue("disability") && (
 						<View
 							style={{
 								margin: 10,
@@ -200,7 +200,7 @@ export class BiodataScreen extends React.Component {
 								onChangeText={(text) =>
 									this.updateValue(text,"disability")
 								}
-								value={this.updateValue(text,"birthIndex")}
+								value={this.currentValue("birthIndex")}
 							/>
 						</View>
 					)}
@@ -249,3 +249,4 @@ export const routineStyles = StyleSheet.create({
 		fontSize: 16,
 	},
 });
+

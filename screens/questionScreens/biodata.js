@@ -22,7 +22,7 @@ export class BiodataScreen extends React.Component {
 
 	biodataContinue = () => {
 		console.log(this.state);
-		this.props.navigation.navigate("Assess patient", { ...this.state });
+		this.props.navigation.navigate("Home", { ...this.state });
 	};
 
 	render() {
@@ -199,7 +199,7 @@ export class BiodataScreen extends React.Component {
 							<Text
 								style={[styles.white, routineStyles.submitText]}
 							>
-								Continue
+								Save and Send
 							</Text>
 						</TouchableOpacity>
 					)}

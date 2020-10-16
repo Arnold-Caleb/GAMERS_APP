@@ -93,6 +93,7 @@ export const ProfileScreen = ({ route, navigation }) => {
 					<Text style={[styles.black]}>CATEGORY</Text>
 					<Text style={[styles.black]}>VHT NAME</Text>
 					<Text style={[styles.black]}>VHT CONTACT</Text>
+					<Text style={[styles.black]}>Transporter</Text>
 				</View>
 
 				<View>
@@ -104,6 +105,8 @@ export const ProfileScreen = ({ route, navigation }) => {
 					</Text>
 					<Text style={styles.theme}>{profile.VHTName}</Text>
 					<Text style={styles.theme}>{profile.VHTPhone}</Text>
+				{profile.Transporter !='' ? <Text style={styles.theme}>None</Text> : <Text style={styles.theme}>{profile.Transporter}</Text>}
+				
 				</View>
 			</View>
 

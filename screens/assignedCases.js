@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, RefreshControl, SafeAreaView } from "react-native";
+import { View, ScrollView, RefreshControl, SafeAreaView, AsyncStorage } from "react-native";
 
 import { styles } from "../styles";
 import { Case } from "../components/scase";
@@ -14,13 +14,9 @@ export class HistoryScreen extends React.Component {
 	};
 
 	componentDidMount() {
-		this.LoadHistory();
+		this._retrieveCases();
 	}
 
-	LoadHistory = async () => {
-		const results = await loadHistory();
-		this.setState({ historyCases: results, numberHistory: results.length });
-	};
 
 	onRefresh = () => {
 		this.setState({ refreshing: true });
@@ -28,6 +24,17 @@ export class HistoryScreen extends React.Component {
 		this.wait(2000).then(() => this.setState({ refreshing: false }));
 	};
 
+	_retrieveCases = async () => {
+		try {
+			const value = await AsyncStorage.getItem("CasesList");
+			if (value !== null) {
+				const cases = JSON.parse(value).filter(d => d.Status !== "pending")
+				this.setState({ historyCases: cases, numberHistory: cases.length });
+			}
+		} catch (error) {
+			alert(error.message);
+		}
+	}
 	wait = (timeout) => {
 		return new Promise((resolve) => {
 			setTimeout(resolve, timeout);
@@ -67,17 +74,23 @@ export class AssignedCasesScreen extends React.Component {
 	};
 
 	componentDidMount() {
-		this.LoadCases();
+		this._retrieveCases();
 	}
 
-	LoadCases = async () => {
-		const results = await loadCases();
-		this.setState({ pendingCases: results, numberPending: results.length });
-	};
-
+	_retrieveCases = async () => {
+		try {
+			const value = await AsyncStorage.getItem("CasesList");
+			if (value !== null) {
+				const cases = JSON.parse(value).filter(d => d.Status === "pending")
+				this.setState({ pendingCases: cases, numberPending: cases.length });
+			}
+		} catch (error) {
+			alert(error.message);
+		}
+	}
 	onRefresh = () => {
 		this.setState({ refreshing: true });
-		this.LoadCases();
+		this._retrieveCases();
 		this.wait(2000).then(() => this.setState({ refreshing: false }));
 	};
 
@@ -109,3 +122,4 @@ export class AssignedCasesScreen extends React.Component {
 		);
 	}
 }
+

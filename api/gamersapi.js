@@ -112,52 +112,51 @@ export const visitation = async (caseid, notimes, interval) => {
 	}
 };
 
+
+
 export const addBiodata = async (info) => {
 	try {
+		function loadvalue (field){
+			const index = info.findIndex(obj => obj.field === field );
+			const property = info[index].value;
+
+			if(typeof property != "string"){
+				return String(property);
+			}
+			else{
+				return property;
+			}
+
+			
+		}
+
+		const content = {
+					caseId: loadvalue("caseId"),
+					mother: loadvalue("mother"),
+					father: loadvalue("father"),
+					children: loadvalue("children"),
+					girls: loadvalue("boys"),
+					boys: loadvalue("girls"),
+					familyType: loadvalue("familyType"),
+					birthIndex:loadvalue("birthIndex"),
+					disability: loadvalue("disability")
+				};
+
 		const response = await fetch(
 			"https://doctorsarch.org/gamers_assets/login_api/createbiodata.php",
 			{
 				method: "POST",
 				mode: "cors",
 				headers: {
-					"Content-Type": "application/json",
+					'Accept': 'application/json',
+					"Content-Type": 'application/json',
 				},
-				body: JSON.stringify({
-					caseId: info.caseId,
-					mother: info.mother,
-					father: info.father,
-					children: info.children,
-					girls: info.boys,
-					boys: info.girls,
-					familyType: info.familyType,
-					birthIndex: info.birthIndex,
-					disability: info.disability,
-				}),
+				body: JSON.stringify(content)
 			}
 		);
-		return response;
+		return "success";
 	} catch (e) {
-		alert("An error occured when updating the database.");
+		alert(e.message);
 	}
 };
 
-export const updateCase = async (caseId) => {
-	try {
-		const response = await fetch(
-			"https://doctorsarch.org/gamers_assets/login_api/updateCase.php",
-			{
-				method: "POST",
-				mode: "cors",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					CaseId: caseId,
-				}),
-			}
-		);
-		return response;
-	} catch (e) {
-		alert("An error occured when closing the case");
-	}
-};

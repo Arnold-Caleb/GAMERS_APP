@@ -9,26 +9,66 @@ import {
 	TextInput,
 } from "react-native";
 import { CheckBox } from "react-native-elements";
-import { biodata } from "../../data/biodata";
+//import { biodata } from "../../data/biodata";
 
 import { styles, THEME } from "../../styles";
+import { addBiodata } from "../../api/gamersapi";
 
 export class BiodataScreen extends React.Component {
 	state = {
-		...biodata,
+		//...biodata,
 		caseId: this.props.route.params.CaseId,
 		bioassertation: false,
-	};
+		biodata : [
+			{field:"caseId", value: this.props.route.params.CaseId},
+			{field: "mother", value: true},
+			{field:"father", value: false},
+			{field: "children", value: 0},
+			{field: "boys", value: 0},
+			{field: "girls", value: 0},
+			{field: "familyType", value: null},
+			{field: "birthIndex", value: null},
+			{field: "disability", value: true},
+			{field: "disabilityDescription", value: null}
+			]
 
-	biodataContinue = () => {
+	};
+  
+	biodataContinue = async() => {
 		console.log(this.state);
-		this.props.navigation.navigate("Assess patient", { ...this.state });
+		const newbiodata = [...this.state.biodata];
+		alert("Sending data, please wait...");
+
+		const result = await addBiodata(newbiodata);
+		if(result ==="success"){
+			this.props.navigation.navigate("Home", { ...this.state });
+		}
+		
 	};
 
+	updateValue = (newvalue,field)=>{
+		
+		let newbio = [...this.state.biodata];
+		const index = newbio.findIndex(obj => obj.field === field );
+		newbio[index] = {...newbio[index], value :newvalue }
+		this.setState({biodata:newbio});
+	}
+	currentValue = (field)=>{
+		let newbio = [...this.state.biodata];
+		const index = newbio.findIndex(obj => obj.field === field );
+		const property = newbio[index].value;
+		return property;
+	}
+
+	
 	render() {
+		
+		
 		return (
+
 			<ScrollView>
 				<KeyboardAvoidingView>
+				
 					<Text
 						style={{ margin: 25, fontSize: 20, fontWeight: "bold" }}
 					>
@@ -36,19 +76,17 @@ export class BiodataScreen extends React.Component {
 					</Text>
 					<CheckBox
 						title="Is the patient's Mother alive?*"
-						checked={this.state.mother}
+						checked={this.currentValue("mother")}
 						checkedColor={THEME}
-						onPress={() =>
-							this.setState({ mother: !this.state.mother })
+						onPress={() =>	
+							this.updateValue(!this.currentValue("mother"),"mother")
 						}
 					/>
 					<CheckBox
 						title="Is the patiet's Father alive?*"
-						checked={this.state.father}
+						checked={this.currentValue("father")}
 						checkedColor={THEME}
-						onPress={() =>
-							this.setState({ father: !this.state.father })
-						}
+						onPress={() =>this.updateValue(!this.currentValue('father'),"father")	}
 					/>
 					<View
 						style={{
@@ -64,13 +102,13 @@ export class BiodataScreen extends React.Component {
 						<TextInput
 							style={styles.textInput}
 							onChangeText={(text) =>
-								this.setState({ children: text })
+								this.updateValue(text,"children")
 							}
-							value={this.state.children}
+							value={this.currentValue("children")}
 							keyboardType="numeric"
 						/>
 					</View>
-					{this.state.children > 0 && (
+					{this.currentValue("children") > 0 && (
 						<View>
 							<View
 								style={{
@@ -86,9 +124,9 @@ export class BiodataScreen extends React.Component {
 								<TextInput
 									style={styles.textInput}
 									onChangeText={(text) =>
-										this.setState({ girls: text })
+										this.updateValue(text,"girls")
 									}
-									value={this.state.girls}
+									value={this.currentValue('girls')}
 									keyboardType="numeric"
 								/>
 							</View>
@@ -106,9 +144,9 @@ export class BiodataScreen extends React.Component {
 								<TextInput
 									style={styles.textInput}
 									onChangeText={(text) =>
-										this.setState({ boys: text })
+										this.updateValue(text,'boys')
 									}
-									value={this.state.boys}
+									value={this.currentValue('boys')}
 									keyboardType="numeric"
 								/>
 							</View>
@@ -126,9 +164,9 @@ export class BiodataScreen extends React.Component {
 						<TextInput
 							style={styles.textInput}
 							onChangeText={(text) =>
-								this.setState({ familyType: text })
+								this.updateValue(text,"familyType")
 							}
-							value={this.state.familyType}
+							value={this.currentValue('familyType')}
 						/>
 					</View>
 
@@ -139,27 +177,25 @@ export class BiodataScreen extends React.Component {
 							backgroundColor: "#fff",
 						}}
 					>
-						<Text>What is the patients birthday?*</Text>
+						<Text>What is the patients birth index?*</Text>
 						<TextInput
 							style={styles.textInput}
 							onChangeText={(text) =>
-								this.setState({ birthIndex: text })
+								this.updateValue(text,"birthIndex")
 							}
-							value={this.state.birthIndex}
+							value={this.currentValue('birthIndex')}
 						/>
 					</View>
 					<CheckBox
 						title="Does the patient have any disability?*"
-						checked={this.state.disability}
+						checked={this.currentValue('disability')}
 						checkedColor={THEME}
 						onPress={() =>
-							this.setState({
-								disability: !this.state.disability,
-							})
+							this.updateValue(!this.currentValue('disability'),"disability")
 						}
 					/>
 
-					{this.state.disability && (
+					{this.currentValue("disability") && (
 						<View
 							style={{
 								margin: 10,
@@ -171,11 +207,9 @@ export class BiodataScreen extends React.Component {
 							<TextInput
 								style={styles.textInput}
 								onChangeText={(text) =>
-									this.setState({
-										disabilityDescription: text,
-									})
+									this.updateValue(text,"disabilityDescription")
 								}
-								value={this.state.disabilityDescription}
+								value={this.currentValue("disabilityDescription")}
 							/>
 						</View>
 					)}
@@ -199,10 +233,11 @@ export class BiodataScreen extends React.Component {
 							<Text
 								style={[styles.white, routineStyles.submitText]}
 							>
-								Continue
+								Save and Send
 							</Text>
 						</TouchableOpacity>
 					)}
+					
 				</KeyboardAvoidingView>
 			</ScrollView>
 		);
